@@ -1,6 +1,7 @@
 package hydroponics;
 
 import arduino.PortDropdownMenu;
+import hydroponics.sheduler.HydroShedule;
 
 import javax.swing.*;
 import java.awt.event.ActionEvent;
@@ -18,6 +19,8 @@ public class GUI {
     JButton waterUp,waterDown,waterStop;
     JButton LEDs;
     boolean LEDsState = false;
+
+    HydroShedule hs;
 
     public GUI (){
         frame = new JFrame("Smart-Hydroponics");
@@ -113,6 +116,38 @@ public class GUI {
         });
 
         panel.add(LEDs);
+
+        JButton shedile = new JButton(new AbstractAction() {
+            int i = 0;
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                if(i == 0){
+                    hs = new HydroShedule(){
+                        @Override
+                        protected void setup(){
+                            System.out.println("setup");
+                        }
+                        @Override
+                        protected void loop(){
+                            System.out.println("loop ");
+                            pause(1000);
+                        }
+                        @Override
+                        protected void end(){
+                            System.out.println("end");
+                        }
+                    };
+                    hs.start();
+                    i=1;
+                }
+                if(i==1){
+                    hs.stop();
+                }
+            }
+        });
+        shedile.setText("Start shedule");
+
+        panel.add(shedile);
 
         frame.setVisible(true);
     }
