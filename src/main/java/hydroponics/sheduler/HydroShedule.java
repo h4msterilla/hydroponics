@@ -4,16 +4,16 @@ public class HydroShedule {
 
     protected Thread shedule;
 
-    public boolean isAlive(){
-        return shedule.isAlive();
-    }
 
     public void start(){
         shedule = new Thread(this::process);
+        shedule.setName("Hydro-Thread");
         shedule.start();
     }
 
     public void process() {
+
+        System.out.println("proccesing shedule");
 
         while(MyTime.getDayTime() <= this.startDayTime())
             pause(1000);
@@ -21,20 +21,25 @@ public class HydroShedule {
         pause(2000);
 
         this.setup();
-        while (MyTime.getDayTime() < this.stopDayTime()) {
+        while (MyTime.getDayTime() < this.stopDayTime() && loopFlag) {
             this.loop();
         }
         this.end();
 
     }
 
+    protected boolean loopFlag = true;
+
     public void stop(){
-        shedule.interrupt();
-        this.end();
+        loopFlag = false;
+        //shedule.notify();
     }
 
-    protected void pause(int millis){
+    protected synchronized void pause(int millis){
+
         try {
+            //shedule.wait(millis);
+            //wait(millis);
             Thread.sleep(millis);
         } catch (InterruptedException e) {
             e.printStackTrace();

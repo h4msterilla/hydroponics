@@ -25,23 +25,23 @@ public class HydroCommand {
         mySerialDataListener.addCommandListener(listener);
     }
 
-    void waterStop(){
+    public void waterStop(){
         Hydro.arduino.serialWrite('0');
     }
 
-    void waterUp(){
+    public void waterUp(){
         Hydro.arduino.serialWrite('1');
     }
 
-    void waterDown(){
+    public void waterDown(){
         Hydro.arduino.serialWrite('2');
     }
 
-    void LEDsOn(){
+    public void LEDsOn(){
         Hydro.arduino.serialWrite('3');
     }
 
-    void LEDsOff(){
+    public void LEDsOff(){
         Hydro.arduino.serialWrite('4');
     }
 }

@@ -2,6 +2,8 @@ package hydroponics;
 
 import arduino.PortDropdownMenu;
 import hydroponics.sheduler.HydroShedule;
+import hydroponics.sheduler.shedules.defaultHydroShedule;
+import hydroponics.sheduler.shedules.testHydroSedule;
 
 import javax.swing.*;
 import java.awt.event.ActionEvent;
@@ -53,14 +55,14 @@ public class GUI {
 
                 Hydro.hydroCommand.addArduinoCommandListener(new ArduinoCommandListener() {
                     @Override
-                    void processCommand(String command) {
+                    protected void processCommand(String command) {
                         System.out.println(command);
                     }
                 });
 
                 Hydro.hydroCommand.addArduinoCommandListener(new ArduinoCommandListener(){
                     @Override
-                    void processCommand(String command) {
+                    protected void processCommand(String command) {
                         if(command.contains("Maximum water level reached!")){
                             System.out.println("Warning!");
                         }
@@ -117,37 +119,49 @@ public class GUI {
 
         panel.add(LEDs);
 
-        JButton shedile = new JButton(new AbstractAction() {
+        JButton testShedule = new JButton("Start test shedule");
+        testShedule.addActionListener(new AbstractAction() {
             int i = 0;
             @Override
             public void actionPerformed(ActionEvent e) {
                 if(i == 0){
-                    hs = new HydroShedule(){
-                        @Override
-                        protected void setup(){
-                            System.out.println("setup");
-                        }
-                        @Override
-                        protected void loop(){
-                            System.out.println("loop ");
-                            pause(1000);
-                        }
-                        @Override
-                        protected void end(){
-                            System.out.println("end");
-                        }
-                    };
+                    System.out.println("start shedule");
+                    hs = new testHydroSedule();
                     hs.start();
                     i=1;
+                    testShedule.setText("Stop test shedule");
+                    return;
                 }
                 if(i==1){
+                    System.out.println("stop shedule");
                     hs.stop();
+                    testShedule.setText("Start test shedule");
+                    i=0;
                 }
             }
         });
-        shedile.setText("Start shedule");
+        panel.add(testShedule);
 
-        panel.add(shedile);
+        JButton defaultShedule = new JButton("Start default shedule");
+        defaultShedule.addActionListener(new AbstractAction() {
+            int i = 0;
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                if(i == 0){
+                    hs = new defaultHydroShedule();
+                    hs.start();
+                    i=1;
+                    defaultShedule.setText("Stop test shedule");
+                    return;
+                }
+                if(i==1){
+                    hs.stop();
+                    defaultShedule.setText("Start default shedule");
+                    i=0;
+                }
+            }
+        });
+        panel.add(defaultShedule);
 
         frame.setVisible(true);
     }
