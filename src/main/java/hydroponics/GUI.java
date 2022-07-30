@@ -151,7 +151,7 @@ public class GUI {
                     hs = new defaultHydroShedule();
                     hs.start();
                     i=1;
-                    defaultShedule.setText("Stop test shedule");
+                    defaultShedule.setText("Stop default shedule");
                     return;
                 }
                 if(i==1){
