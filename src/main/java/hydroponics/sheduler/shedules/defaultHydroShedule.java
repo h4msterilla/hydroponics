@@ -31,13 +31,13 @@ public class defaultHydroShedule extends HydroShedule {
 
         System.out.println(MyTime.getHour(waterUpTiming) + ":" + MyTime.getMin(waterUpTiming) + ":" + MyTime.getSec(waterUpTiming));
 
-        pause(1000*10);
+        pause(1000*60*15);
 
         Hydro.hydroCommand.waterDown();
-        pause((int)waterUpTiming);
+        pause((int)(waterUpTiming) + (1000*60));
         Hydro.hydroCommand.waterStop();
 
-        pause(1000*10);
+        pause(1000*60*15);
 
     }
 
